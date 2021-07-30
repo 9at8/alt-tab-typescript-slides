@@ -1,0 +1,11 @@
+{
+  "name": "alt-tab-typescript-slides",
+  "scripts": {
+    "dev": "marp --server .",
+    "html": "marp --html README.md",
+    "pdf": "marp --pdf README.md"
+  },
+  "devDependencies": {
+    "@marp-team/marp-cli": "^1.2.0"
+  }
+}
