@@ -266,6 +266,8 @@ TypeScript type system does not have arithmetic in it
       >
   ```
 
+[Playground Link](https://www.typescriptlang.org/play?#code/C4TwDgpgBAkgdgYwCoEMBGAbaBeKBvKABgC4oBGAbnNICYqbSBmKx0gFirdIFYrvSAbFQGkA7FVGkAHFSmkAnFXmkyhKAF8KAKC2hIUACIRk6LFFwFVCpdNliJg4Tz7tOTFrXoqqZUms06etDwCAA8SFAQAB7AEHAAJgDOUHAArgC2aBAATgB85lAR0bEJyQDWECAA9gBmsIiomBBaUFAA-PUmTQDaSAC6LVCkcBAAbjnauuDQRmFFMXFJKRlZeQXzJUsV1XWzjViDHXumEL0DrcNjE4HTUAASECjx4ZELpVAocCDdffnYgxtFslup8QAAaKAAOmhoJ+51a7UK3QA5IRkfCLikrtlJkFCigAJYYF7FIEfL4-P4A16bYGgiHQyEEuA1HJQABKEESwAxiM53MGmJG4xxN30MESADlseE-lAzjSyd1hTk+ojgNlUtBSDUUBhEhBcbcADKxUIAQUV7zSmRyEIAQlaljbVlTWhLpSKLflSe8NVrDrApTL7T63kt-c0EerNVGETq9QbBqRTRBQiFvRCM6Hckb9ABhFDci0OuWW31LR0dS2ke156AAZTIBXgBuywAJVTgDaq7dC3QEEPkENEELIEMIELYEMYv3r9TbHa7Pb71IryRdOR+YMG7KdG5WW7VuB+WjlgPep9aHXZyYXOSX3d7wFCgoRheLqCJsohm+ylJ3aN3TgRdQgeJ4fw5XI32gqZ9AbGgWxAh9QkYCFunHKAaCnCFuF+MVgmQ1dWklfdlltbJAI5Mi-1POU93XeV4Q6bpJXhFMzUlCFwOedlcjDWkoEjN8WK4qFoXZXlSG6N9ox40I+KooDxMhVsULEj8Xy-YlFPI1ZKWg5SBiAA)
+
 ---
 
 - Sorting
@@ -283,3 +285,6 @@ TypeScript type system does not have arithmetic in it
 ---
 
 (Probably a good idea to not use this stuff during interviews)
+
+[Slides](https://9at8.dev/alt-tab-slides)
+[Slides - GitHub](https://github.com/)
