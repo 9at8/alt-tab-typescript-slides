@@ -286,5 +286,4 @@ TypeScript type system does not have arithmetic in it
 
 (Probably a good idea to not use this stuff during interviews)
 
-[Slides](https://9at8.dev/alt-tab-slides)
-[Slides - GitHub](https://github.com/)
+[Slides](https://9at8.github.io/alt-tab-typescript-slides/README.html)
