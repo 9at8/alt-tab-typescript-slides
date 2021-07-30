@@ -14,11 +14,25 @@ _class: invert
 # Intro to "Advanced" TypeScript
 
 <!--
-- TypeScript is a programming language which compiles to JavaScript that came out in 2013.
-- TypeScript is a superset of JavaScript.
+- Hi
+- talk about TypeScript
+
+TypeScript is a programming language that came out in 2013. Instead of compiling to bytecode, it compiles to JavaScript. It's a superset of JavaScript. It adds static typing to it.
+
+No matter what language we work with, sometimes, we want to express certain ideas in that language, but it gets pretty hard to exactly represent those ideas. I will talking about some of these ideas that can be represented in TypeScript, but it uses techniques that you dont use everyday. This talk is inspired by an npm package that I'll reveal a bit later.
 -->
 
+`TypeScript` = `static types` + `JavaScript`
+`static types` = `TypeScript` - `JavaScript` 🤔
+
 ---
+
+<!--
+- Adi
+- CS program - Graduated this year in Winter 2021
+- I have been using TypeScript since 2018 - 2nd year
+- Hesitant to use it for the first 2-3 weeks, but I could not let it go later on
+-->
 
 ```ts
 const me = {
@@ -32,63 +46,11 @@ const me = {
 
 ---
 
-## Intro to "advanced" TypeScript? 🤔🤔🤔
-
-`TypeScript` = `static types` + `JavaScript`
-`static types` = `TypeScript` - `JavaScript` ????
-
-<!--
-Sometimes, we want to express certain ideas in a language, but it gets pretty hard to exactly represent those ideas. This talk goes over some of those ideas that can be represented in TypeScript, but it uses techniques that you dont use everyday.
--->
-
----
-
-## Basics
-
-<!--
-Lets quickly go over some basic concepts.
-
-- Primitive types
-- Type aliases
--->
-
-- Primitive types - `string`, `number`, `boolean`
-- Type aliases
-
-  ```ts
-  type Name = string
-  const me: Name = "Aditya Thakral"
-  ```
-
----
-
-- Interfaces
-
-```ts
-  interface Person {
-    name: string
-  }
-
-  function sendMessage(person: Person) { ... }
-
-  const me = {
-    name: "Aditya Thakral",
-    program: "CS",
-  }
-
-  sendMessage(me)
-```
-
-<!--
-- Interfaces
-- TypeScript is structurally typed
--->
-
----
-
 ## Types as Sets
 
 <!--
+Let's get started off with some basic stuff.
+
 We can think about types as sets. Each type represents a set of values.
 
 - The set of booleans contains two values: true and false
@@ -99,125 +61,225 @@ We can think about types as sets. Each type represents a set of values.
 
 ```
 boolean = {true, false}
-integers = {-1, 2, -3, 3.14, 42, ...}
+number = {-1, 2, -3, 3.14, 42, ...}
 string = {"oof", "ooff", "oofff", "ooffff", ...}
 
 interface Person {
-  name: string
+  firstName: string
+  lastName: string
 }
 
-Person = Forall s in string -> ({ name: s })
+Person  = Forall fname in string ->
+            Forall lname in string ->
+              ({ firstName: fname, lastName: lname })
 ```
 
-<!--
-Now that we know that types are like sets, what can we do with this information?
--->
-
----
-
-## Unions
-
-<!--
-We have two types: the `Circle` type and the `Rectangle` type.
--->
-
-  ```ts
-  interface Circle {
-    type: 'circle'
-    radius: number
-  }
-
-  interface Rectangle {
-    type: 'rectangle'
-    length: number
-    width: number
-  }
-  ```
-
 ---
 
 <!--
-We can now create a union of these two types.
+Let's say we need to represent a box of items. There could be anything in this box. How can we represent that?
+
+--
+
+But once we put something inside a box, the compiler has no way of knowing what its type is going to be later on.
 -->
 
   ```ts
-  type Shape = Circle | Rectangle
-
-  function getArea(shape: Shape) {
-    switch (shape.type) {
-    case 'circle': return Math.PI * shape.radius ** 2
-    case 'rectangle': return shape.length * shape.width
-    }
+  interface Box {
+    id: number
+    item: any
   }
+
+  const box: Box = { id: 42, item: "i am a string" }
+
+  box.item
+  //  ^^^^ oh no! the compiler no longer knows that it clearly is a string!
+  ```
+
+---
+
+## Generics
+
+<!--
+This is where generics kick in.
+
+We can create a generic Box, which can take it an item of type Item. This is very similar to how we name function parameters.
+-->
+
+  ```ts
+  interface Box<Item> {
+    id: number
+    item: Item
+  }
+
+  const stringBox: Box<string> = { id: 42, item: "i am a string" }
+  const numberBox: Box<number> = { id: 24, item: 1 }
+
+  stringBox.item  // <- the compiler knows that item is a string
+  numberBox.item  // <- the compiler knows that item is a number
   ```
 
 ---
 
 <!--
-We have two sets - Cat and Dog
-
-Let's say dogs like `number`s and cats like `string`s.
-
-We want to create one map, that maps `string`s to `Cat`, and `number`s to `Dog`.
+What if we only wanted boxes of strings and numbers? We can use the extends keyword along with a type union
 -->
 
   ```ts
-  interface Cat {  // I <3 strings
-    type: 'cat'
-    name: string
-    meow: () => void
+  interface Box<Item extends string | number> {
+    id: number
+    item: Item
   }
 
-  interface Dog {  // I <3 numbers
-    type: 'dog'
-    name: string
-    woof: () => void
-  }
+  const stringBox: Box<string> = { id: 42, item: "i am a string" }
+  const numberBox: Box<number> = { id: 24, item: 1 }
+  const boolBox: Box<boolean> = { id: -42, item: true }
+  //                 ^^^^^^^
+  // Type 'boolean' does not satisfy the constraint 'string | number'.
   ```
 
 ---
 
-In JavaScript, this is trivial (but you don't get static typing):
+<!--
+Lets say our boxes have more boxes inside them. We want to able to look at the type of the item in the innermost box easily. We can use the infer keyword along with recursive types for this
+-->
 
-  ```js
-  const map = new Map()
-  map.set('i am a string', cat)
-  map.set(42, dog)
+  ```ts
+  type Unbox<TBox> = TBox extends Box<infer Item>
+    ? Item extends Box<any>
+      ? Unbox<Item>
+      : Item
+    : never
 
-  // But nothing is stopping us from accidentally doing this! 😰
-  map.set(24, cat)
+  const strBox = { id: 42, item: "i am a string" }
+  const strBoxBox = { id: 24, item: strBox }
+
+  type InnerType1 = Unbox<typeof strBox>
+  //   ^^^^^^^^^^ string
+  type InnerType2 = Unbox<typeof strBoxBox>
+  //   ^^^^^^^^^^ string
   ```
 
 ---
 
-How do we do this in TypeScript?
+## `meta-typing` package
 
-```ts
-  type DogOrCatMap = Map<number, Dog> & Map<string, Cat>
+https://github.com/ronami/meta-typing
 
-  const foo: DogOrCatMap = new Map()
+<!--
+The rest of the talk will be focused on the meta-typing package. This package provides a bunch of utilities for TypeScript that can be used during compile time. All the code in the slides has been more or less directly copied from that package.
+-->
 
-  const fooDog = foo.get(34)
-  const fooCat = foo.get('hello')
+---
 
-  // ---- can we make a generic type?
+## Incrementing and decrementing numbers
 
-  // Copied from https://github.com/ronami/meta-typing/blob/master/src/tail/index.d.ts
-  export type Tail<T extends Array<any>> =
-    ((...t: T) => void) extends (h: any, ...rest: infer R) => void ? R : never;
+<!--
+TypeScript type system does not have arithmetic in it
+-->
 
-  type NewMap<TArr extends [unknown, unknown][]> =
-    TArr extends [[infer TKey, infer TValue], ...any[]]
-      ? Pick<Map<TKey, TValue>, 'get' | 'set' | 'delete'> & NewMap<Tail<TArr>>
-      : unknown
+  ```ts
+  type IncTable = { 0: 1; 1: 2; 2: 3; 3: 4; 4: 5; 5: 6; 6: 7; 7: 8; 8: 9; 9: 10 };
 
-  // ----- test
+  type DecTable = { 10: 9; 9: 8; 8: 7; 7: 6; 6: 5; 5: 4; 4: 3; 3: 2; 2: 1; 1: 0 };
 
-  const newMap: NewMap<[
-    [string, Cat],
-    [number, Dog],
-  ]> = new Map()
+  type Inc<T extends number> = T extends keyof IncTable
+    ? IncTable[T]
+    : never;
 
-  const aDog = newMap.get(12)
-  const aCat = newMap.get('12')
+  type Dec<T extends number> = T extends keyof DecTable
+    ? DecTable[T]
+    : never;
+
+  type Two = Inc<1>
+  type One = Dec<Inc<1>>
   ```
+
+---
+
+## Head and tail of a list
+
+  ```ts
+  type Head<T extends Array<any>> =
+    T extends [any, ...Array<any>]
+      ? T['0']
+      : never;
+
+  type Tail<T extends Array<any>> =
+    T extends [any, ...infer Rest]
+      ? Rest
+      : never;
+  ```
+
+---
+
+## Less than or equal to
+
+  ```ts
+  // `true` if `A` is smaller than or equals to `B`, `false` otherwise
+  type Lte<A extends number, B extends number> =
+    IsNever<A> extends true
+    ? IsNever<B> extends true
+      ? true
+      : false
+    : Lte<Inc<A>, Inc<B>>;
+
+  /*
+    Lte<8, 9> = Lte<9, 10> = Lte<10, never> = Lte<never, never> = true
+    Lte<9, 8> = Lte<10, 9> = Lte<never, 10> = false
+   */
+  ```
+
+---
+
+# THE BIG REVEAL
+
+---
+
+## Insertion sort
+
+  ```ts
+  type Insert<
+    N extends number,
+    R extends number[]
+  > = R extends []
+    ? [N]
+    : Lte<N, Head<R>> extends true
+      ? [N, ...R]
+      : [
+          Head<R>,
+          ...Insert<N, Cast<Tail<R>, number[]>>
+        ]
+  ```
+
+---
+
+  ```ts
+  type InsertionSort<
+    T extends number[],
+    R extends number[] = []
+  > = T extends []
+    ? R
+    : InsertionSort<
+        Cast<Tail<T>, number[]>,
+        Insert<Head<T>, R>
+      >
+  ```
+
+---
+
+- Sorting
+  - Quick-sort
+  - Merge-sort
+  - Insertion-sort
+
+- Puzzles
+  - N-Queens
+  - Maze-solving
+  - Binary trees
+  - Square Matrix Rotation
+  - Towers of Hanoi
+
+---
+
+(Probably a good idea to not use this stuff during interviews)
