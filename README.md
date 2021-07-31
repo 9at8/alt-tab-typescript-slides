@@ -11,13 +11,13 @@ _class: invert
   }
 </style>
 
-# Intro to "Advanced" TypeScript
+# Intro to meta programming in TypeScript
 
 <!--
 - Hi
 - talk about TypeScript
 
-TypeScript is a programming language that came out in 2013. Instead of compiling to bytecode, it compiles to JavaScript. It's a superset of JavaScript. It adds static typing to it.
+TypeScript is a programming language that came out in 2013. Instead of compiling to bytecode, it compiles to JavaScript. It's a superset of JavaScript. It adds static typing to it. This talk is going to focus on meta programming in TypeScript
 
 No matter what language we work with, sometimes, we want to express certain ideas in that language, but it gets pretty hard to exactly represent those ideas. I will talking about some of these ideas that can be represented in TypeScript, but it uses techniques that you dont use everyday. This talk is inspired by an npm package that I'll reveal a bit later.
 -->
@@ -43,6 +43,8 @@ const me = {
   twitter:   "9at8_",
 }
 ```
+
+![bg right:33%](./me.jpg)
 
 ---
 
@@ -197,22 +199,6 @@ TypeScript type system does not have arithmetic in it
 
 ---
 
-## Head and tail of a list
-
-  ```ts
-  type Head<T extends Array<any>> =
-    T extends [any, ...Array<any>]
-      ? T['0']
-      : never;
-
-  type Tail<T extends Array<any>> =
-    T extends [any, ...infer Rest]
-      ? Rest
-      : never;
-  ```
-
----
-
 ## Less than or equal to
 
   ```ts
@@ -229,6 +215,23 @@ TypeScript type system does not have arithmetic in it
     Lte<9, 8> = Lte<10, 9> = Lte<never, 10> = false
    */
   ```
+
+---
+
+## Head and tail of a list
+
+  ```ts
+  type Head<T extends Array<any>> =
+    T extends [any, ...Array<any>]
+      ? T['0']
+      : never;
+
+  type Tail<T extends Array<any>> =
+    T extends [any, ...infer Rest]
+      ? Rest
+      : never;
+  ```
+
 
 ---
 
@@ -284,6 +287,9 @@ TypeScript type system does not have arithmetic in it
 
 ---
 
+# Questions?
+
 (Probably a good idea to not use this stuff during interviews)
 
 [Slides](https://9at8.github.io/alt-tab-typescript-slides/README.html)
+
