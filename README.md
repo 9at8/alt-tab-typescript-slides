@@ -130,7 +130,11 @@ numberBox.data  // <- the compiler knows that data is a number
 ---
 
 <!--
-What if we only wanted boxes of strings and numbers? We can use the extends keyword along with a type union
+What if we only wanted boxes of strings and numbers? We can use the extends keyword along with a type union.
+
+--
+
+Lets say our boxes have more boxes inside them. We want to able to look at the type of the item in the innermost box easily.
 -->
 
 ```ts
@@ -150,8 +154,14 @@ const boolBox: Box<boolean> = { id: -42, data: true }
 
 ---
 
+Can we open a box, or a box of a box, or a box of a box of a box .... and take a look at the type inside it?
+
+![height:350px](https://media.giphy.com/media/xThuWu82QD3pj4wvEQ/giphy.gif)
+
+---
+
 <!--
-Lets say our boxes have more boxes inside them. We want to able to look at the type of the item in the innermost box easily. We can use the infer keyword along with recursive types for this
+We can use the infer keyword along with recursive types for this
 -->
 
 ```ts
@@ -178,6 +188,10 @@ type InnerType2 = Unbox<typeof strBoxBox>
 ---
 
 ## What is meta programming?
+
+![height:400px](https://media1.tenor.com/images/8b6204a52a635ab0448283c20a832610/tenor.gif)
+
+---
 
 Wikipedia:
 > Metaprogramming is a programming technique in which computer programs have the ability to treat other programs as their data.
@@ -262,6 +276,8 @@ type Tail<T extends Array<any>> =
 ---
 
 # THE BIG REVEAL
+
+![bg right:55%](https://media1.tenor.com/images/f282743438fcb3fd7d57fd8506e06749/tenor.gif)
 
 ---
 
