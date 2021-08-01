@@ -96,7 +96,7 @@ interface Box {
 
 const box: Box = { id: 42, data: "i am a string" }
 
-box.item
+box.data
 //  ^^^^ oh no! the compiler no longer knows that it clearly is a string!
 ```
 
@@ -333,6 +333,6 @@ type InsertionSort<
 
 (Probably a good idea to not use this stuff during interviews)
 
-[Slides (source)](https://github.com/alt-tab-typescript-slides)
+[Slides (source)](https://github.com/9at8/alt-tab-typescript-slides)
 [Slides (html)](https://9at8.github.io/alt-tab-typescript-slides/README.html)
 [Slides (pdf)](https://9at8.github.io/alt-tab-typescript-slides/README.pdf)
